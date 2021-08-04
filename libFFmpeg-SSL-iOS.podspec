@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |spec|
   spec.name          = 'libFFmpeg-SSL-iOS'
-  spec.version       = '3.4'
+  spec.version       = '4.0'
   spec.summary       = "ffmpeg libs with SSL."
   spec.description   = "ffmpeg libs with SSL for iOS, including armv7 arm64 and x86_64 archs."
   spec.homepage      = "https://github.com/GWTimes/libFFmpeg-SSL-iOS"
