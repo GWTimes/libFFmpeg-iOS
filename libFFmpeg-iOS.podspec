@@ -20,6 +20,8 @@ Pod::Spec.new do |spec|
   spec.source        = { :http => "https://github.com/GWTimes/libFFmpeg-iOS/archive/refs/tags/#{spec.version}.zip" }
 
   spec.vendored_libraries  = "libFFmpeg-iOS-#{spec.version}/lib/*.a"
-  spec.public_header_files = "libFFmpeg-iOS-#{spec.version}/include/*.h"
+  spec.source_files        = "libFFmpeg-iOS-#{spec.version}/include/**/*.h"
+  spec.public_header_files = "libFFmpeg-iOS-#{spec.version}/include/**/*.h"
+
 end
 
