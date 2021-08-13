@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |spec|
   spec.name          = 'libFFmpeg-iOS'
-  spec.version       = '4.0c'
+  spec.version       = '4.0d'
   spec.summary       = "ffmpeg libraries for iOS."
   spec.homepage      = "https://github.com/GWTimes/#{spec.name}"
   # spec.license       = { :type => "MIT", :file => "LICENSE" }
@@ -16,7 +16,6 @@ Pod::Spec.new do |spec|
 
   spec.pod_target_xcconfig = { 'VALID_ARCHS' => 'x86_64 armv7 arm64' }
   spec.platform      = :ios, "9.0"
-  spec.requires_arc  = true
   spec.source        = { :http => "https://github.com/GWTimes/#{spec.name}/archive/refs/tags/#{spec.version}.zip" }
 
   spec.prepare_command = <<-CMD
@@ -33,57 +32,28 @@ Pod::Spec.new do |spec|
       fi
     fi
   CMD
-
-  spec.default_subspecs = ['ffmpeg', 'avcodec', 'avfilter', 'avformat', 'avutil', 'swresample', 'swscale', 'openssl']
-
-  spec.header_mappings_dir = "include"
-
-  spec.subspec 'ffmpeg' do |ss| 
-    ss.source_files        = "include/libffmpeg/**/*.h"
-    ss.public_header_files = "include/libffmpeg/**/*.h"
+  
+  spec.default_subspecs = ['ffmpeg-headers', 'ffmpeg-libs', 'openssl-headers', 'openssl-libs']
+    
+  spec.subspec 'ffmpeg-headers' do |ss|
+    ss.source_files        = "include/lib*/**/*.h"
+    ss.public_header_files = "include/lib*/**/*.h"
   end
-
-  spec.subspec 'avcodec' do |ss| 
-    ss.vendored_libraries  = "lib/libavcodec.a"
-    ss.source_files        = "include/{libavcodeclibffmpe*/*.h", 
-    ss.public_header_files = "include/libavcodec/**/*.h"
+  
+  spec.subspec 'ffmpeg-libs' do |ss|
+    ss.vendored_libraries  = "lib/lib*.a"
   end
-
-  spec.subspec 'avfilter' do |ss| 
-    ss.vendored_libraries  = "lib/libavfilter.a"
-    ss.source_files        = "include/libavfilter/**/*.h"
-    ss.public_header_files = "include/libavfilter/**/*.h"
-  end
-
-  spec.subspec 'avformat' do |ss| 
-    ss.vendored_libraries  = "lib/libavformat.a"
-    ss.source_files        = "include/libavformat/**/*.h"
-    ss.public_header_files = "include/libavformat/**/*.h"
-  end
-
-  spec.subspec 'avutil' do |ss| 
-    ss.vendored_libraries  = "lib/libavutil.a"
-    ss.source_files        = "include/libavutil/**/*.h"
-    ss.public_header_files = "include/libavutil/**/*.h"
-  end
-
-  spec.subspec 'swresample' do |ss| 
-    ss.vendored_libraries  = "lib/libswresample.a"
-    ss.source_files        = "include/libswresample/**/*.h"
-    ss.public_header_files = "include/libswresample/**/*.h"
-  end
-
-  spec.subspec 'swscale' do |ss| 
-    ss.vendored_libraries  = "lib/libswscale.a"
-    ss.source_files        = "include/libswscale/**/*.h"
-    ss.public_header_files = "include/libswscale/**/*.h"
-  end
-
-  spec.subspec 'openssl' do |ss| 
-    ss.vendored_libraries  = "lib/{libssl,libcrypto}.a"
+  
+  spec.subspec 'openssl-headers' do |ss|
     ss.source_files        = "include/openssl/**/*.h"
     ss.public_header_files = "include/openssl/**/*.h"
   end
-
+  
+  spec.subspec 'openssl-libs' do |ss|
+    ss.vendored_libraries  = "lib/openssl/*.a"
+  end
+  
+  spec.header_mappings_dir = "include"
+  
 end
 
