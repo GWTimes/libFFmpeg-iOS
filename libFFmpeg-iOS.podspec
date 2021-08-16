@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |spec|
   spec.name          = 'libFFmpeg-iOS'
-  spec.version       = '4.0d'
+  spec.version       = '4.0e'
   spec.summary       = "ffmpeg libraries for iOS."
   spec.homepage      = "https://github.com/GWTimes/#{spec.name}"
   # spec.license       = { :type => "MIT", :file => "LICENSE" }
@@ -16,44 +16,52 @@ Pod::Spec.new do |spec|
 
   spec.pod_target_xcconfig = { 'VALID_ARCHS' => 'x86_64 armv7 arm64' }
   spec.platform      = :ios, "9.0"
-  spec.source        = { :http => "https://github.com/GWTimes/#{spec.name}/archive/refs/tags/#{spec.version}.zip" }
+# spec.source        = { :http => "https://github.com/GWTimes/#{spec.name}/archive/refs/tags/#{spec.version}.zip" }
+  spec.source        = { :git => "https://gitlab.gwell.cc/iospublic/#{spec.name}.git", :tag => "#{spec.version}" }
 
-  spec.prepare_command = <<-CMD
-    zipdir="#{spec.name}-#{spec.version}"
-    if [ -d "./include" ] && [ -d "./lib" ]; then
-      echo "local path"
-    else
-      echo "remote download"
-      if [ -d ${zipdir} ]; then
-        mv ${zipdir}/* .
-        rm -rf ${zipdir}
-      else
-        echo "error ${zipdir}"
-      fi
-    fi
-  CMD
+  # spec.prepare_command = <<-CMD
+  #   zipdir="#{spec.name}-#{spec.version}"
+  #   if [ -d "./include" ] && [ -d "./lib" ]; then
+  #     echo "local path"
+  #   else
+  #     echo "remote download"
+  #     if [ -d ${zipdir} ]; then
+  #       mv ${zipdir}/* .
+  #       rm -rf ${zipdir}
+  #     else
+  #       echo "💔💔error ${zipdir}"
+  #       say -v Mei-Jia "文件预处理失败"
+  #     fi
+  #   fi
+  # CMD
+
+  spec.subspec 'ffmpeg' do |ss|
+
+    ss.subspec 'include' do |ssp|
+      ssp.source_files        = 'include/ffmpeg/**/*.h'
+      ssp.public_header_files = 'include/ffmpeg/**/*.h'
+      ssp.header_mappings_dir = 'include/ffmpeg'
+    end
+
+    ss.subspec 'lib' do |ssp|
+      ssp.vendored_libraries  = 'lib/ffmpeg/**/*.a'
+    end
   
-  spec.default_subspecs = ['ffmpeg-headers', 'ffmpeg-libs', 'openssl-headers', 'openssl-libs']
+  end
+
+  spec.subspec 'openssl' do |ss|
     
-  spec.subspec 'ffmpeg-headers' do |ss|
-    ss.source_files        = "include/lib*/**/*.h"
-    ss.public_header_files = "include/lib*/**/*.h"
+    ss.subspec 'include' do |ssp|
+      ssp.source_files        = 'include/openssl/**/*.h'
+      ssp.public_header_files = 'include/openssl/**/*.h'
+      ssp.header_mappings_dir = 'include'
+    end
+
+    ss.subspec 'lib' do |ssp|
+      ssp.vendored_libraries  = 'lib/openssl/**/*.a'
+    end
+
   end
-  
-  spec.subspec 'ffmpeg-libs' do |ss|
-    ss.vendored_libraries  = "lib/lib*.a"
-  end
-  
-  spec.subspec 'openssl-headers' do |ss|
-    ss.source_files        = "include/openssl/**/*.h"
-    ss.public_header_files = "include/openssl/**/*.h"
-  end
-  
-  spec.subspec 'openssl-libs' do |ss|
-    ss.vendored_libraries  = "lib/openssl/*.a"
-  end
-  
-  spec.header_mappings_dir = "include"
   
 end
 
